@@ -164,7 +164,7 @@ if __name__ == '__main__':
                      'module purge; source ../modulefiles/' +
                       MACHINE_ID + '.' + BUILD_COMPILER +
                      '; source ../modulefiles/' + MACHINE_ID +
-                     '.setenv; module list; ecbuild --build=release -DMPIEXEC=$MPIEXEC -DMPIEXEC_EXECUTABLE=$MPIEXEC -DBUILD_CRTM=OFF ../src/soca-bundle; make -j12'])
+                     '.setenv; module list; ecbuild --build=release -DMPIEXEC=$MPIEXEC -DMPIEXEC_EXECUTABLE=$MPIEXEC -DBUILD_ECKIT=ON -DBUILD_CRTM=OFF ../src/soca-bundle; make -j12'])
             except subprocess.CalledProcessError as error:
                 sys.exit(
                     '-----------Trouble to build SOCA with ' + 
