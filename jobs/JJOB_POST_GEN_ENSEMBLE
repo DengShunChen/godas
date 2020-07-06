@@ -58,6 +58,9 @@ for MEMBER_NO in $(seq $ENSBEG $ENSEND); do
    # ciceprep_func "${RUNCDATE}/Data/cic.pert.ens.*.nc"
 
    mkdir -p ${RUNCDATE}/mem$MEMBER_NO
+   
    mv -f RESTART/* ${RUNCDATE}/mem$MEMBER_NO
-
 done
+
+mkdir -p ${RUNCDATE}/../../../../ENS_ICs
+cp -rf ${RUNCDATE}/mem* ${RUNCDATE}/../../../../ENS_ICs
