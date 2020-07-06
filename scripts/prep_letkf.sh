@@ -20,9 +20,19 @@ shift $((OPTIND -1))
 
 # Basic functions 
 # ----------------------------------
+cdate2bkg_date(){ echo ${1:0:4}-${1:4:2}-${1:6:2}T12:00:00Z; }          # make generic.            
 
 ## Main 
 #--------------------------------------
+cdate_hh(){ echo  ${1:8:2}; }
+if [ $(cdate_hh $CDATE) -eq 12 ]; then
+    echo "Setting SOCA config for 24hr DA window"
+else
+    echo "Background date needs to be at 12Z"
+    echo "CDATE="$CDATE
+    exit 1
+fi
+
 echo "RUNCDATE     : ${RUNCDATE}" 
 echo "LETKFDIR     : ${LETKFDIR}"
 echo
@@ -68,6 +78,13 @@ ${ROOT_GODAS_DIR}/scripts/replace_KWRD_yaml.sh     \
 
 # Prep yaml for letkf                                                                                         
 #----------------------------------------------------                                                         
+export bkg_date=$(cdate2bkg_date $CDATE)
+echo "bkg_date="$bkg_date
+
+${ROOT_GODAS_DIR}/scripts/prep_BKG_DATE_yaml.sh    \
+      -i $RUNCDATE/yaml/ensrecenter.yml    \
+      -d ${bkg_date}
+
 ${ROOT_GODAS_DIR}/scripts/prep_recenter_yaml.sh     \
       -i $LETKFDIR/yaml/ensrecenter.yml                 \
       -d $LETKFDIR                                \
