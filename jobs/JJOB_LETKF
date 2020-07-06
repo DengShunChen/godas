@@ -54,4 +54,4 @@ fi
 ##============================================
 #EOF
 
-#srun -n $NPE ${SOCA_EXEC}/soca_ensrecenter.x ./yaml/ensrecenter.yml
+srun -n $NPE ${SOCA_EXEC}/soca_ensrecenter.x ./yaml/ensrecenter.yml

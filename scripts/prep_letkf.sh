@@ -41,6 +41,7 @@ cp $SOCA_STATIC/INPUT/layer_coord.nc            \
 mkdir -p ${LETKFDIR}/yaml
 cp -r $SOCA_CONFIG/letkf.yml ${LETKFDIR}/yaml/letkf.yaml
 cp -r $SOCA_CONFIG/gridgen.yml ${LETKFDIR}/yaml/gridgen.yml
+cp -r $SOCA_CONFIG/ensrecenter.yml ${LETKFDIR}/yaml/ensrecenter.yml
 
 # Copy SOCA static files into RUNCDATE                                                                      
 #---------------------------------------------------                                                        
@@ -64,3 +65,10 @@ ${ROOT_GODAS_DIR}/scripts/replace_KWRD_yaml.sh     \
       -i $LETKFDIR/yaml/letkf.yaml                 \
       -k NO_ENS_MBR                                \
       -v ${mbr}
+
+# Prep yaml for letkf                                                                                         
+#----------------------------------------------------                                                         
+${ROOT_GODAS_DIR}/scripts/prep_recenter_yaml.sh     \
+      -i $LETKFDIR/yaml/ensrecenter.yml                 \
+      -d $LETKFDIR                                \
+      -n ${mbr}
