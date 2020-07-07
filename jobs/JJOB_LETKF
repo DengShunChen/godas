@@ -54,4 +54,26 @@ fi
 ##============================================
 #EOF
 
+if [ ! -d RESTART ]; then mkdir -p RESTART; fi
+
+export ENSEND=$((NMEM_PGRP * ENSGRP))
+export ENSBEG=$((ENSEND - NMEM_PGRP + 1))
+
+mv ocn.ana.*.nc ./Data
+
+for MEMBER_NO in $(seq $ENSBEG $ENSEND); do
+   echo
+   echo Running Checkpoint for the $MEMBER_NO
+
+   srun -n $NPE ${SOCA_EXEC}/soca_checkpoint_model.x ./yaml/checkpointmodel$MEMBER_NO.yml
+
+   # TODO: The ice is not pertubated but eventually, it will.                                      
+   # ciceprep_func "${RUNCDATE}/Data/cic.pert.ens.*.nc"                                            
+
+   mkdir -p ${LETKFDIR}/mem$MEMBER_NO
+
+   mv -f RESTART/* ${LETKFDIR}/mem$MEMBER_NO
+   ln -s ${LETKFDIR}/mem$MEMBER_NO/MOM.res.nc ocn.ana.$MEMBER_NO.nc
+done
+
 srun -n $NPE ${SOCA_EXEC}/soca_ensrecenter.x ./yaml/ensrecenter.yml
