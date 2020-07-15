@@ -123,8 +123,28 @@ suite: !Cycle
         config: [ base ]
         J_JOB: JJOB_LETKF
 
-      fcst_run: !TaskArray
+      letkf_recenter: !TaskArray
         Trigger: !Depend letkf
+        Dimensions:
+          groupid: !calc tools.seq(1,doc.da_settings.GROUPS,1)
+        fcst_prep_grp: !TaskElement
+          <<: *shared_task_template
+          Foreach: [ groupid ]
+          Name: !expand "pgrp{dimval.groupid}"
+          resources: !calc partition.resources.run_fcst
+          config: [ base ]
+          J_JOB: JJOB_LETKF_RECEN
+          ENSGRP: !expand "{dimval.groupid:02d}"
+          rocoto_command: !expand >-
+            {rocoto_load_modules} ;
+            {rocoto_config_source} ;
+            /usr/bin/env ENSGRP={ENSGRP} &ROOT_GODAS_DIR;/jobs/{J_JOB}
+          ecflow_command: !expand |
+            export ENSGRP={ENSGRP}
+            $ROOT_GODAS_DIR/jobs/{J_JOB}
+
+      fcst_run: !TaskArray
+        Trigger: !Depend letkf_recenter
         Dimensions:
           groupid: !calc tools.seq(1,doc.da_settings.GROUPS,1)
         fcst_run_grp: !TaskElement
