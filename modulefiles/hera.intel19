@@ -1,0 +1,8 @@
+%Module######################################################################
+##      GODAS prerequisites
+##
+
+module purge
+module use -a /scratch2/NCEPDEV/marineda/Yi-cheng.Teng/opt/modulefiles/apps
+module use -a /scratch2/NCEPDEV/marineda/Yi-cheng.Teng/opt/modulefiles/core
+module load intel-impi-19.0.5-ecbuild-release-stable
