@@ -57,9 +57,13 @@ The bundle of repositories necessary to build SOCA
 
     Hera: 'ecbuild --build=release -DMPIEXEC_EXECUTABLE=`which srun` -DMPIEXEC_NUMPROC_FLAG="-n" -DBUILD_ECKIT=ON -DBUILD_CRTM=OFF $CLONE_DIR/src/soca-bundle'
 
-    Orion: `ecbuild --build=release -DBUILD_ECKIT=ON -DBUILD_METIS=ON -DBUILD_CRTM=ON $CLONE_DIR/src/soca-bundle`
+    Orion: 
+    `module load ecbuild`
+    `module load cmake`
+    `ecbuild --build=release -DBUILD_ECKIT=ON -DBUILD_METIS=ON -DBUILD_CRTM=ON $CLONE_DIR/src/soca-bundle`
 
-4. `make -j12`
+4. `cd soca`
+   `make -j12`
 5. Unit test the build \
    `salloc --ntasks 12 --qos=debug --time=00:30:00 --account=marine-cpu` \
    `ctest`
